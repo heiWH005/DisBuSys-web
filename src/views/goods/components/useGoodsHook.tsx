@@ -1,4 +1,5 @@
-const useUserHook = () => {
+import dayjs from "dayjs";
+const useGoodsHook = () => {
   const columns = ref([
     {
       prop: "name",
@@ -67,6 +68,9 @@ const useUserHook = () => {
     return data;
   };
   const dataCallBack = data => {
+    data.dataList.forEach(item => {
+      item.updatedAt = item.updatedAt ? dayjs(item.updatedAt).format("YYYY-MM-DD HH:mm:ss") : "";
+    });
     return data;
   };
 
@@ -80,4 +84,4 @@ const useUserHook = () => {
     progressList
   };
 };
-export default useUserHook;
+export default useGoodsHook;

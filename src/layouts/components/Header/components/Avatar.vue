@@ -3,7 +3,7 @@
     <el-dropdown trigger="click">
       <span class="username">
         <span>
-          {{ userInfo.accountNo }}
+          {{ userInfo.accountNo || userInfo.email }}
         </span>
         <el-icon>
           <CaretBottom />

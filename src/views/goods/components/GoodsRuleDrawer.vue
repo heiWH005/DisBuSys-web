@@ -5,16 +5,18 @@
         <el-button type="primary" @click="handleAdd">新增规则</el-button>
       </div>
       <el-table :data="tableData" v-loading="loading" element-loading-text="正在加载中..." :border="true">
-        <el-table-column prop="ruleName" label="规则名称" width="180" />
-        <el-table-column prop="ruleType" label="规则类型" width="120" />
-        <el-table-column prop="ruleValue" label="规则值" />
-        <el-table-column prop="createTime" label="创建时间" width="180" />
-        <el-table-column label="操作" width="150" fixed="right">
+        <el-table-column prop="serialNo" label="商品编号" width="180" />
+        <el-table-column prop="name" label="商品名称" width="180" />
+        <el-table-column prop="levelNumber" label="层级" width="180" />
+        <el-table-column prop="commissionPercentage" label="比例" width="180" />
+        <el-table-column prop="fixedCommissionAmount" label="固定金额" width="180" />
+        <el-table-column prop="profit" label="利润" width="180" />
+        <!-- <el-table-column label="操作" width="150" fixed="right">
           <template #default="scope">
             <el-button type="primary" link @click="handleEdit(scope.row)">编辑</el-button>
             <el-button type="danger" link @click="handleDelete(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <template #empty>
           <div class="table-empty">
             <slot name="empty">
@@ -24,18 +26,7 @@
           </div>
         </template>
       </el-table>
-      <div class="pagination-container">
-        <el-pagination
-          v-model:current-page="pageable.pageNum"
-          v-model:page-size="pageable.pageSize"
-          :page-sizes="[10, 20, 50, 100]"
-          background
-          layout="total, sizes, prev, pager, next"
-          :total="pageable.total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
-      </div>
+      <div class="pagination-container"></div>
     </div>
 
     <GoodsRuleDialog
@@ -53,6 +44,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useTable } from "@/hooks/useTable";
 import { ElMessage } from "element-plus";
 import GoodsRuleDialog from "./GoodsRuleDialog.vue";
+import { getProductRuleList, saveOrUpdateProductRule } from "@/api/modules/common";
 
 const props = defineProps({
   visible: {
@@ -66,44 +58,59 @@ const props = defineProps({
   title: {
     type: String,
     default: "规则列表"
+  },
+  goodsInfo: {
+    type: Object,
+    default: () => ({})
   }
 });
 
 const emit = defineEmits(["update:visible"]);
-
+const tableData = ref([]);
+const loading = ref(false);
 const drawerVisible = computed({
   get: () => props.visible,
   set: val => emit("update:visible", val)
 });
 
-// 使用表格Hook
-const { tableData, pageable, handleSizeChange, handleCurrentChange, getTableList, loading } = useTable(async params => {
-  // TODO: 替换为实际的获取规则列表API
-  return {
-    list: [],
-    total: 0
-  };
-});
+const getTableList = async () => {
+  loading.value = true;
+  const res = await getProductRuleList({ productId: props.goodsId });
+  if (res.code === 200) {
+    tableData.value = res.data.dataList;
+    loading.value = false;
+  }
+};
 
 // 规则弹窗相关
 const ruleDialogVisible = ref(false);
 const ruleDialogTitle = ref("新增规则");
 const ruleDialogLoading = ref(false);
 const currentRule = ref({
-  id: "",
-  ruleName: "",
-  ruleType: "",
-  ruleValue: ""
+  productId: "",
+  serialNo: "",
+  name: "",
+  levelNumber: "",
+  commissionPercentage: 0,
+  fixedCommissionAmount: 0,
+  profit: "",
+  commissionType: "",
+  type: ""
 });
 
 // 新增规则
 const handleAdd = () => {
   ruleDialogTitle.value = "新增规则";
   currentRule.value = {
-    id: "",
-    ruleName: "",
-    ruleType: "",
-    ruleValue: ""
+    productId: props.goodsInfo.id,
+    serialNo: props.goodsInfo.serialNo,
+    name: props.goodsInfo.name,
+    levelNumber: "",
+    commissionPercentage: 0,
+    fixedCommissionAmount: 0,
+    profit: props.goodsInfo.profit,
+    commissionType: props.goodsInfo.commissionType,
+    type: props.goodsInfo.type
   };
   ruleDialogVisible.value = true;
 };
@@ -124,8 +131,12 @@ const handleDelete = async (row: any) => {
 const handleRuleSubmit = async (formData: any) => {
   ruleDialogLoading.value = true;
   try {
-    // TODO: 实现保存规则API
-    ElMessage.success(formData.id ? "更新成功" : "新增成功");
+    const res = await saveOrUpdateProductRule(formData);
+    if (res.code === 200) {
+      ElMessage.success(formData.id ? "更新成功" : "新增成功");
+    } else {
+      ElMessage.error(res.message);
+    }
     ruleDialogVisible.value = false;
     getTableList();
   } catch (error) {
@@ -140,6 +151,7 @@ watch(
   () => props.goodsId,
   newVal => {
     if (newVal) {
+      console.log("newVal", newVal);
       getTableList();
     }
   }

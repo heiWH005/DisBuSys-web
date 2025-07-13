@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 const useUserHook = () => {
   const columns = ref([
     {
@@ -12,8 +13,8 @@ const useUserHook = () => {
     },
     {
       prop: "userName",
-      label: "订单状态",
-      search: { el: "input", placeholder: "请输入订单状态" }
+      label: "用户名称",
+      search: { el: "input", placeholder: "请输入用户名称" }
     }
   ]);
   const progressList = ref([]);
@@ -42,6 +43,9 @@ const useUserHook = () => {
     return data;
   };
   const dataCallBack = data => {
+    data.dataList.forEach(item => {
+      item.updatedAt = item.updatedAt ? dayjs(item.updatedAt).format("YYYY-MM-DD HH:mm:ss") : "";
+    });
     return data;
   };
 

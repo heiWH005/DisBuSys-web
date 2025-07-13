@@ -33,6 +33,7 @@ import { useTable } from "@/hooks/useTable";
 import { getCommissionLedgerList } from "@/api/modules/common";
 import { ElMessage } from "element-plus";
 
+const { columns, tableColumns, dataCallBack, paramCallBack } = useSplitAccountHook();
 const {
   tableData,
   pageable,
@@ -46,8 +47,7 @@ const {
   search,
   reset,
   loading
-} = useTable(getCommissionLedgerList);
-const { columns, tableColumns } = useSplitAccountHook();
+} = useTable(getCommissionLedgerList, dataCallBack, paramCallBack);
 
 onMounted(() => {
   getTableList();

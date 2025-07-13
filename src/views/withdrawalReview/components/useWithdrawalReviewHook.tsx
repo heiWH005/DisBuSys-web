@@ -1,4 +1,5 @@
-const useUserHook = () => {
+import dayjs from "dayjs";
+const useWithdrawalReviewHook = () => {
   const columns = ref([
     {
       prop: "userName",
@@ -11,15 +12,15 @@ const useUserHook = () => {
       enum: [
         {
           label: "待审核",
-          value: "pending"
+          value: "PENDING"
         },
         {
           label: "通过",
-          value: "pass"
+          value: "APPROVED"
         },
         {
           label: "驳回",
-          value: "reject"
+          value: "REJECTED"
         }
       ],
       search: { el: "select", placeholder: "请选择状态" }
@@ -44,7 +45,7 @@ const useUserHook = () => {
       minWidth: 180
     },
     {
-      prop: "externalOrderId",
+      prop: "userId",
       label: "用户ID",
       minWidth: 100
     },
@@ -86,6 +87,10 @@ const useUserHook = () => {
     return data;
   };
   const dataCallBack = data => {
+    data.dataList.forEach(item => {
+      item.requestedAt = dayjs(item.requestedAt).format("YYYY-MM-DD HH:mm:ss");
+      item.processedAt = dayjs(item.processedAt).format("YYYY-MM-DD HH:mm:ss");
+    });
     return data;
   };
 
@@ -99,4 +104,4 @@ const useUserHook = () => {
     progressList
   };
 };
-export default useUserHook;
+export default useWithdrawalReviewHook;

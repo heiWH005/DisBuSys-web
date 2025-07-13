@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 const useOrderHook = () => {
   const columns = ref([
     {
@@ -66,7 +67,7 @@ const useOrderHook = () => {
       minWidth: 100
     },
     {
-      prop: "buyerAddress",
+      prop: "receiveAddress",
       label: "地址",
       align: "center",
       minWidth: 100
@@ -83,6 +84,9 @@ const useOrderHook = () => {
     return data;
   };
   const dataCallBack = data => {
+    data.dataList.forEach(item => {
+      item.updatedAt = item.updatedAt ? dayjs(item.updatedAt).format("YYYY-MM-DD HH:mm:ss") : "";
+    });
     return data;
   };
 

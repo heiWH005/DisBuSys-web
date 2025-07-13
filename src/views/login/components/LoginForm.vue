@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
-import { HOME_URL } from "@/config/config";
+import { HOME_URL, GLOBAL_TITLE } from "@/config/config";
 import { Login } from "@/api/interface";
 import { ElNotification, ElMessage } from "element-plus";
 import { useUserStore } from "@/stores/modules/user";
@@ -56,8 +56,8 @@ const loginRules = reactive({
 
 const loading = ref(false);
 const loginForm = reactive<Login.ReqLoginForm>({
-  accountNo: "",
-  password: ""
+  accountNo: "root",
+  password: "123456"
 });
 
 // login
@@ -87,7 +87,7 @@ const login = (formEl: FormInstance | undefined) => {
       router.push(HOME_URL);
       ElNotification({
         title: getTimeState(),
-        message: "欢迎登录 Geeker-Admin",
+        message: "欢迎登录 " + GLOBAL_TITLE,
         type: "success",
         duration: 3000
       });

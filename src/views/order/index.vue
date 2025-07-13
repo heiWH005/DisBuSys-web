@@ -33,7 +33,7 @@ import { useTable } from "@/hooks/useTable";
 import { getOrderList } from "@/api/modules/common";
 
 import { ElMessage } from "element-plus";
-
+const { columns, tableColumns, dataCallBack, paramCallBack } = useOrderHook();
 const {
   tableData,
   pageable,
@@ -47,8 +47,7 @@ const {
   search,
   reset,
   loading
-} = useTable(getOrderList);
-const { columns, tableColumns } = useOrderHook();
+} = useTable(getOrderList, dataCallBack, paramCallBack);
 
 onMounted(() => {
   getTableList();

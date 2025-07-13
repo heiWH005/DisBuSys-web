@@ -46,7 +46,7 @@ import { useTable } from "@/hooks/useTable";
 import { getUserList, saveOrUpdateUser } from "@/api/modules/common";
 import UserAddOrUpdateDialog from "./components/UserAddOrUpdateDialog.vue";
 import { ElMessage } from "element-plus";
-
+const { columns, tableColumns, dataCallBack, paramCallBack } = useUserHook();
 const {
   tableData,
   pageable,
@@ -60,8 +60,7 @@ const {
   search,
   reset,
   loading
-} = useTable(getUserList);
-const { columns, tableColumns } = useUserHook();
+} = useTable(getUserList, dataCallBack, paramCallBack);
 
 const dialogVisible = ref(false);
 const dialogTitle = ref("新增用户");
@@ -71,7 +70,7 @@ const currentItem = ref<any>({
   name: "",
   email: "",
   password: "",
-  isDistributor: "1",
+  isDistributor: 1,
   levelNumber: "",
   parentId: ""
 });
@@ -84,7 +83,7 @@ const handleAdd = () => {
     name: "",
     email: "",
     password: "",
-    isDistributor: "1",
+    isDistributor: 1,
     levelNumber: "",
     parentId: ""
   };
@@ -103,6 +102,7 @@ const handleEdit = row => {
     levelNumber: row.levelNumber,
     parentId: row.parentId
   };
+  console.log("currentItem", currentItem.value);
   dialogVisible.value = true;
 };
 

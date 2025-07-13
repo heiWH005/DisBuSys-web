@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 const useUserHook = () => {
   const columns = ref([
     {
@@ -27,7 +28,7 @@ const useUserHook = () => {
     { label: "名字", prop: "name", align: "center", minWidth: 100 },
     { label: "账号", prop: "email", align: "center", minWidth: 100 },
     { label: "密码", prop: "password", align: "center", minWidth: 100 },
-    { label: "是否分销员", prop: "isDistributor", align: "center", minWidth: 100 },
+    { label: "是否分销员", prop: "isDistributorStr", align: "center", minWidth: 100 },
     { label: "分销员等级", prop: "levelName", align: "center", minWidth: 100 },
     { label: "上级分销员", prop: "parentId", align: "center", minWidth: 100 },
     { label: "分账总和", prop: "totalCommission", align: "center", minWidth: 100 },
@@ -39,6 +40,10 @@ const useUserHook = () => {
     return data;
   };
   const dataCallBack = data => {
+    data.dataList.forEach(item => {
+      item.isDistributorStr = item.isDistributor == 1 ? "是" : "否";
+      item.updatedAt = item.updatedAt ? dayjs(item.updatedAt).format("YYYY-MM-DD HH:mm:ss") : "";
+    });
     return data;
   };
 

@@ -58,6 +58,7 @@ export const useTable = (
       if (code !== 200) {
         ElMessage.warning(message);
       }
+      data.dataList = data.dataList || [];
       dataCallBack && (data = dataCallBack(data));
       state.tableData = isPageable ? data.dataList : data;
       let { pageNum, pageSize, total } = data;

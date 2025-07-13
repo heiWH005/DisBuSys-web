@@ -44,6 +44,7 @@ import { getWithdrawalsList, withdrawals } from "@/api/modules/common";
 import CheckAddOrUpdateDialog from "./components/CheckAddOrUpdateDialog.vue";
 import { ElMessage } from "element-plus";
 
+const { columns, tableColumns, dataCallBack, paramCallBack } = useWithdrawalReviewHook();
 const {
   tableData,
   pageable,
@@ -57,8 +58,7 @@ const {
   search,
   reset,
   loading
-} = useTable(getWithdrawalsList);
-const { columns, tableColumns } = useWithdrawalReviewHook();
+} = useTable(getWithdrawalsList, dataCallBack, paramCallBack);
 
 const dialogVisible = ref(false);
 const dialogTitle = ref("提现审核");
@@ -99,7 +99,7 @@ const handleSubmit = async (params: any) => {
 };
 
 onMounted(() => {
-  searchParam.value.status = "pending";
+  searchParam.value.status = "PENDING";
   getTableList();
 });
 </script>

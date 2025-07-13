@@ -33,7 +33,12 @@
         @submit="handleSubmit"
         :title="dialogTitle"
       />
-      <GoodsRuleDrawer v-model:visible="ruleDrawerVisible" :goods-id="currentGoodsId" title="规则列表" />
+      <GoodsRuleDrawer
+        v-model:visible="ruleDrawerVisible"
+        :goods-id="currentGoodsInfo.id"
+        :goods-info="currentGoodsInfo"
+        title="规则列表"
+      />
     </template>
   </IndexPagePro>
 </template>
@@ -45,11 +50,12 @@ import ProTable from "@/components/ProTable/index.vue";
 import useGoodsHook from "./components/useGoodsHook";
 import { useHandleData } from "@/hooks/useHandleData";
 import { useTable } from "@/hooks/useTable";
-import { getUserList, saveOrUpdateUser } from "@/api/modules/common";
+import { getProductList, saveOrUpdateProduct } from "@/api/modules/common";
 import GoodsAddOrUpdateDialog from "./components/GoodsAddOrUpdateDialog.vue";
 import { ElMessage } from "element-plus";
 import GoodsRuleDrawer from "./components/GoodsRuleDrawer.vue";
 
+const { columns, tableColumns, dataCallBack, paramCallBack } = useGoodsHook();
 const {
   tableData,
   pageable,
@@ -63,8 +69,7 @@ const {
   search,
   reset,
   loading
-} = useTable(getUserList);
-const { columns, tableColumns } = useGoodsHook();
+} = useTable(getProductList, dataCallBack, paramCallBack);
 
 const dialogVisible = ref(false);
 const dialogTitle = ref("新增用户");
@@ -72,24 +77,23 @@ const dialogLoading = ref(false);
 const currentItem = ref<any>({
   id: "",
   name: "",
-  email: "",
-  password: "",
-  isDistributor: "1",
-  levelNumber: "",
-  parentId: ""
+  type: "",
+  commissionType: "",
+  profit: "",
+  maxDistributionLevels: 0
 });
 
 // 新增
 const handleAdd = () => {
-  dialogTitle.value = "新增用户";
+  dialogTitle.value = "新增商品";
   currentItem.value = {
     id: "",
     name: "",
-    email: "",
-    password: "",
-    isDistributor: "1",
-    levelNumber: "",
-    parentId: ""
+    type: "",
+    serialNo: "",
+    commissionType: "",
+    profit: "",
+    maxDistributionLevels: 0
   };
   dialogVisible.value = true;
 };
@@ -100,11 +104,11 @@ const handleEdit = row => {
   currentItem.value = {
     id: row.id,
     name: row.name,
-    email: row.email,
-    password: row.password,
-    isDistributor: row.isDistributor,
-    levelNumber: row.levelNumber,
-    parentId: row.parentId
+    type: row.type,
+    serialNo: row.serialNo,
+    commissionType: row.commissionType,
+    profit: row.profit,
+    maxDistributionLevels: row.maxDistributionLevels
   };
   dialogVisible.value = true;
 };
@@ -114,7 +118,7 @@ const handleSubmit = async (params: any) => {
   dialogLoading.value = true;
   try {
     dialogLoading.value = false;
-    let res = await saveOrUpdateUser(params);
+    let res = await saveOrUpdateProduct(params);
     if (res.code === 200) {
       ElMessage.success(params.id ? "更新成功" : "新增成功");
       dialogVisible.value = false;
@@ -132,11 +136,12 @@ onMounted(() => {
 });
 
 const ruleDrawerVisible = ref(false);
-const currentGoodsId = ref("");
+const currentGoodsInfo = ref<any>({});
 
 // 分配规则
 const handleAssignRule = row => {
-  currentGoodsId.value = row.id;
+  console.log("row", row);
+  currentGoodsInfo.value = row;
   ruleDrawerVisible.value = true;
 };
 </script>

@@ -4,9 +4,9 @@
       <el-form ref="formRef" :model="form" label-width="auto" :rules="labelRules">
         <el-form-item label="审核状态:" prop="status">
           <el-select v-model="form.status" placeholder="请选择审核状态">
-            <el-option label="待审核" value="pending" />
-            <el-option label="通过" value="pass" />
-            <el-option label="驳回" value="reject" />
+            <el-option label="待审核" value="PENDING" />
+            <el-option label="通过" value="APPROVED" />
+            <el-option label="驳回" value="REJECTED" />
           </el-select>
         </el-form-item>
         <el-form-item label="原因:" prop="notes">

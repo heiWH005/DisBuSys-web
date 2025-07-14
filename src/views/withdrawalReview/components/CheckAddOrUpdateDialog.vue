@@ -65,6 +65,7 @@ const dialogLoading = computed({
     emit("update:loading", value);
   }
 });
+
 const handleImgAndCites = (form: any) => {
   let formCopy = form;
   return formCopy;
@@ -80,6 +81,7 @@ const handleBaseForm = () => {
 const handleClose = () => {
   emit("update:visible", false);
 };
+
 // 提交
 const handleConfirm = async (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid, fields) => {
@@ -90,6 +92,20 @@ const handleConfirm = async (formEl: FormInstance | undefined) => {
     }
   });
 };
+
+// 驳回的时候原因必填
+const handleStatusChange = (value: string) => {
+  if (value === "REJECTED") {
+    labelRules.value.notes = [
+      { required: true, message: "请输入审核原因", trigger: "blur" },
+      { min: 2, max: 200, message: "长度在 2 到 200 个字符", trigger: "blur" }
+    ];
+  } else {
+    labelRules.value.notes = [];
+  }
+};
+// 监听审核状态变化
+watch(() => form.value.status, handleStatusChange);
 </script>
 
 <style lang="scss" scoped></style>

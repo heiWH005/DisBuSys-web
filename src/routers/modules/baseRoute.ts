@@ -21,7 +21,7 @@ const userRoute = [
     name: "user",
     component: "/user/index",
     meta: {
-      icon: "InfoFilled",
+      icon: "UserFilled",
       title: "用户管理",
       isLink: "",
       isHide: false,
@@ -37,7 +37,7 @@ const goodsRoute = [
     name: "goods",
     component: "/goods/index",
     meta: {
-      icon: "InfoFilled",
+      icon: "GoodsFilled",
       title: "商品列表",
       isLink: "",
       isHide: false,
@@ -53,7 +53,7 @@ const orderRoute = [
     name: "order",
     component: "/order/index",
     meta: {
-      icon: "InfoFilled",
+      icon: "Notebook",
       title: "订单管理",
       isLink: "",
       isHide: false,
@@ -69,7 +69,7 @@ const splitAccountRoute = [
     name: "splitAccount",
     component: "/splitAccount/index",
     meta: {
-      icon: "InfoFilled",
+      icon: "Reading",
       title: "分账列表",
       isLink: "",
       isHide: false,
@@ -85,7 +85,7 @@ const withdrawalReviewRoute = [
     name: "withdrawalReview",
     component: "/withdrawalReview/index",
     meta: {
-      icon: "InfoFilled",
+      icon: "Checked",
       title: "提现审核列表",
       isLink: "",
       isHide: false,

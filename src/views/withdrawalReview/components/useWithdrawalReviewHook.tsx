@@ -11,15 +11,15 @@ const useWithdrawalReviewHook = () => {
       label: "状态",
       enum: [
         {
-          label: "待审核",
+          label: "PENDING",
           value: "PENDING"
         },
         {
-          label: "通过",
+          label: "APPROVED",
           value: "APPROVED"
         },
         {
-          label: "驳回",
+          label: "REJECTED",
           value: "REJECTED"
         }
       ],

@@ -26,7 +26,7 @@
           :min="0"
           :max="100"
           style="width: 200px"
-        />
+        /><span> &nbsp;% </span>
       </el-form-item>
       <el-form-item label="固定金额" prop="fixedCommissionAmount" v-if="formData.commissionType === 'FIXED'">
         <el-input-number v-model="formData.fixedCommissionAmount" placeholder="请输入固定金额" :min="0" style="width: 200px" />

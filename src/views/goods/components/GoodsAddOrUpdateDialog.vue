@@ -26,7 +26,6 @@
           <el-input-number
             v-model="form.maxDistributionLevels"
             :min="1"
-            :max="10"
             :step="1"
             placeholder="请输入最多分配层级"
             style="width: 200px"
